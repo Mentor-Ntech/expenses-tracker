@@ -1,8 +1,11 @@
 import React, {useState, useContext} from 'react';
 import { TextField, Typography, Grid, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { ExpenseTrackerContext} from  "../../../context/context";
-import useStyles from './styles';
 import {v4 as uuidv4} from 'uuid';
+
+import useStyles from './styles';
+import { incomeCategories, expenseCategories } from '../../../constants/categories';
+
 
 const initialState = {
   amount: "",
@@ -26,6 +29,7 @@ const Form = () => {
       setFormData(initialState);
     }
 
+     const selectedCategories = formData.type === "Income" ? incomeCategories : expenseCategories;
 
   return (
     <Grid container spacing={2}>
@@ -49,8 +53,7 @@ const Form = () => {
         <FormControl fullWidth>
            <InputLabel>Category</InputLabel>
            <Select  value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value})}>
-           <MenuItem value="business">Business</MenuItem>
-            <MenuItem value="salary">Salary</MenuItem>
+           {selectedCategories.map((category)=> <MenuItem key={category.type} value={category.type}>{category.type}</MenuItem>)}
            </Select>
         </FormControl>
        </Grid>
